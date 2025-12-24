@@ -1,0 +1,11 @@
+#config database
+config/database.ini
+
+#enviroment
+venv/
+
+#pycache
+__pycache__/
+*.pyc
+*.pyo
+
