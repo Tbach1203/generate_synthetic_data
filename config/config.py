@@ -1,6 +1,7 @@
 from configparser import ConfigParser
+import psycopg2
 
-def load_config(filename='config/database.ini', section = 'postgreSQL'):
+def load_config(filename='config/database.ini', section = 'postgresql'):
     parser = ConfigParser()
     parser.read(filename)
 
@@ -12,3 +13,11 @@ def load_config(filename='config/database.ini', section = 'postgreSQL'):
     else:
         raise Exception('Section {0} not found in the {1} file'.format(section, filename))
     return config
+
+def connect(config):
+    try:
+        conn = psycopg2.connect(**config)
+        print("Connect successfull!")
+    except (psycopg2.DatabaseError, Exception) as err:
+        print(err)
+    return conn
