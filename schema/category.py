@@ -43,8 +43,9 @@ CATEGORY = {
     ]
 }
 
-def insert_category(conn, total=10):
+def insert_category(conn):
     fake = Faker()
+    volume = 10
     try:
         with conn.cursor() as cur:
             parent_map = {}
@@ -63,7 +64,7 @@ def insert_category(conn, total=10):
                 parent_map[parent_name] = parent_id
                 used_count += 1
             # 2️⃣ Insert sub categories until đủ 10
-            remaining = total - used_count
+            remaining = volume - used_count
             sub_candidates = []
             for parent in main_categories:
                 for child in CATEGORY[parent]:
@@ -79,7 +80,7 @@ def insert_category(conn, total=10):
                     fake.date_time_this_year()
                 ))
         conn.commit()
-        print(f"Inserted {total} categories")
+        print(f"Inserted {volume} categories successfully")
     except psycopg2.DatabaseError as e:
         conn.rollback()
         print("Error inserting category:", e)

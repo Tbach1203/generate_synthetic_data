@@ -21,13 +21,14 @@ def brand(conn):
 
 def insert_brand(conn):
     fake = Faker()
+    volume = 20
     command = """
         INSERT INTO brand (brand_name, country, created_at)
         VALUES (%s, %s, %s);
     """
     try:
         with conn.cursor() as cur:
-            for _ in range(20):
+            for _ in range(volume):
                 brand_name = fake.company()
                 country = fake.country()
                 created_at = fake.date_time_this_decade()
@@ -35,7 +36,7 @@ def insert_brand(conn):
                 cur.execute(command, (brand_name, country, created_at))
 
         conn.commit()
-        print(f"Inserted {20} rows into brand table")
+        print(f"Inserted {volume} brands successfully")
     except psycopg2.DatabaseError as e:
         conn.rollback()
         print("Error inserting brand data:", e)
