@@ -25,42 +25,61 @@ def category(conn):
         conn.rollback()
         print("Error creating category table:", e)
 
-CATEGORY_NAMES = [
-    "Electronics",
-    "Fashion",
-    "Home",
-    "Sports",
-    "Beauty",
-    "Books",
-    "Toys",
-    "Automotive",
-    "Health",
-    "Groceries"
-]
+CATEGORY = {
+    "Electronics": [
+        "Mobile Phones", "Laptops", "Tablets", "Cameras"
+    ],
+    "Fashion": [
+        "Jeans", "T-Shirts", "Jackets", "Shoes"
+    ],
+    "Home": [
+        "Furniture", "Kitchen", "Decor"
+    ],
+    "Sports": [
+        "Fitness", "Outdoor", "Cycling"
+    ],
+    "Beauty": [
+        "Skincare", "Makeup", "Hair Care"
+    ]
+}
 
-def insert_category(conn):
+def insert_category(conn, total=10):
     fake = Faker()
     try:
         with conn.cursor() as cur:
-            main_category_ids = []
-            # 1️⃣ Insert main categories (level = 1)
-            for name in CATEGORY_NAMES[:3]:
+            parent_map = {}
+            used_count = 0
+            # 1️⃣ Random main categories (3–4)
+            main_count = random.randint(3, 4)
+            main_categories = random.sample(list(CATEGORY.keys()), main_count)
+
+            for parent_name in main_categories:
                 cur.execute("""
                     INSERT INTO category (category_name, parent_category_id, level, created_at)
                     VALUES (%s, NULL, 1, %s)
                     RETURNING category_id;
-                """, (name, fake.date_time_this_year()))
-                main_category_ids.append(cur.fetchone()[0])
-
-            # 2️⃣ Insert sub categories (level = 2)
-            for name in CATEGORY_NAMES[3:]:
-                parent_id = random.choice(main_category_ids)
+                """, (parent_name, fake.date_time_this_year()))
+                parent_id = cur.fetchone()[0]
+                parent_map[parent_name] = parent_id
+                used_count += 1
+            # 2️⃣ Insert sub categories until đủ 10
+            remaining = total - used_count
+            sub_candidates = []
+            for parent in main_categories:
+                for child in CATEGORY[parent]:
+                    sub_candidates.append((parent, child))
+            random.shuffle(sub_candidates)
+            for parent_name, child_name in sub_candidates[:remaining]:
                 cur.execute("""
                     INSERT INTO category (category_name, parent_category_id, level, created_at)
                     VALUES (%s, %s, 2, %s);
-                """, (name, parent_id, fake.date_time_this_year()))
+                """, (
+                    child_name,
+                    parent_map[parent_name],
+                    fake.date_time_this_year()
+                ))
         conn.commit()
-        print("Inserted 10 categories")
+        print(f"Inserted {total} categories")
     except psycopg2.DatabaseError as e:
         conn.rollback()
         print("Error inserting category:", e)

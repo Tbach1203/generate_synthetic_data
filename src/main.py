@@ -11,5 +11,5 @@ if __name__ == '__main__':
     # insert_brand(conn)
 
     #category
-    # category(conn)
-    # insert_category(conn)
+    category(conn)
+    insert_category(conn)

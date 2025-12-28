@@ -18,6 +18,6 @@ def connect(config):
     try:
         conn = psycopg2.connect(**config)
         print("Connect successfull!")
-    except (psycopg2.DatabaseError, Exception) as err:
-        print(err)
+    except (psycopg2.DatabaseError, Exception) as e:
+        print(e)
     return conn
