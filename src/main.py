@@ -3,6 +3,7 @@ from schema.brand import brand, insert_brand
 from schema.category import category, insert_category
 from schema.seller import seller, insert_seller
 from schema.product import product, insert_product
+from schema.order import order, insert_order
 
 if __name__ == '__main__':
     config = load_config()
@@ -23,3 +24,8 @@ if __name__ == '__main__':
     #product
     # product(conn)
     # insert_product(conn)
+
+    #order
+    # order(conn)
+    # insert_order(conn)
+
