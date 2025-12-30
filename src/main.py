@@ -5,6 +5,7 @@ from schema.seller import seller, insert_seller
 from schema.product import product, insert_product
 from schema.order import order, insert_order
 from schema.order_item import order_item, insert_order_item
+from schema.promotions import promotions, insert_promotions
 
 if __name__ == '__main__':
     config = load_config()
@@ -31,5 +32,10 @@ if __name__ == '__main__':
     # insert_order(conn)
 
     #order_item
-    order_item(conn)
-    insert_order_item(conn)
+    # order_item(conn)
+    # insert_order_item(conn)
+
+    #promotions
+    promotions(conn)
+    insert_promotions(conn)
+
