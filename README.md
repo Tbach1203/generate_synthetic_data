@@ -47,7 +47,7 @@ poetry install
 ```
 ### 3. Run commands using Poetry
 ```bash 
-poetry run python src/main.py
+poetry run python -m src.main
 ```
 ### 4. Configure database
 Update database connection settings in the ```config/``` directory.
