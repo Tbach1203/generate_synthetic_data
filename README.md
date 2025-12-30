@@ -53,5 +53,5 @@ poetry run python -m src.main
 Update database connection settings in the ```config/``` directory.
 ### 5. Generate and load data
 ```bash
-poetry run python src/main.py
+poetry run python -m src.main
 ```
