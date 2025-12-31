@@ -38,8 +38,8 @@ This project uses Python and Faker to generate relationally consistent synthetic
 ## Getting Started
 ### 1. Clone the repository
 ```bash
-git clone <repository-url>
-cd <project-name>
+git clone https://github.com/Tbach1203/generate_synthetic_data.git
+cd generate_synthetic_data
 ```
 ### 2. Install dependencies
 ```bash
