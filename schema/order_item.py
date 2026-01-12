@@ -32,7 +32,7 @@ def order_item(conn):
         conn.rollback()
         print("Error creating table:", e)
 
-def fech_order_and_product_ids(conn):
+def fetch_order_and_product_ids(conn):
     with conn.cursor() as cur:
         cur.execute("SELECT order_id FROM orders")
         order_ids = [row[0] for row in cur.fetchall()]
@@ -44,10 +44,10 @@ def fech_order_and_product_ids(conn):
     return order_ids, products
 
 def insert_order_item(conn):
-    order_ids, products = fech_order_and_product_ids(conn)
-    volume = 1_000_000
+    order_ids, products = fetch_order_and_product_ids(conn) 
     batch_size = 5000
-    command = """
+
+    insert_sql = """
     INSERT INTO order_item (
         order_id,
         product_id,
@@ -57,17 +57,22 @@ def insert_order_item(conn):
     )
     VALUES (%s, %s, %s, %s, %s);
     """
+
     items_buffer = []
     total_inserted = 0
+
     try:
         with conn.cursor() as cur:
             for order_id in order_ids:
-                item_count = random.randint(2, 5)
+                # mỗi order có 2–4 items
+                item_count = random.randint(2, 4)
+
                 selected_products = random.sample(products, item_count)
 
                 for product_id, unit_price in selected_products:
-                    quantity = random.randint(1,5)
-                    subtotal = quantity*unit_price
+                    quantity = random.randint(1, 5)
+                    subtotal = quantity * unit_price
+
                     items_buffer.append((
                         order_id,
                         product_id,
@@ -77,18 +82,15 @@ def insert_order_item(conn):
                     ))
                     total_inserted += 1
 
-                    if total_inserted >= volume:
-                        break
                 if len(items_buffer) >= batch_size:
-                    execute_batch(cur, command, items_buffer)
+                    execute_batch(cur, insert_sql, items_buffer)
                     items_buffer.clear()
-                if total_inserted >= volume:
-                    break
+
             if items_buffer:
-                execute_batch(cur, command, items_buffer)
-                
+                execute_batch(cur, insert_sql, items_buffer)
+
         conn.commit()
-        print(f"Inserted {total_inserted} order items successfully")
+        print(f"Inserted {total_inserted} order item records successfully")
 
     except Exception as e:
         conn.rollback()

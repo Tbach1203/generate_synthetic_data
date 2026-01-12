@@ -33,15 +33,15 @@ if __name__ == '__main__':
     # insert_order(conn)
 
     #order_item
-    # order_item(conn)
-    # insert_order_item(conn)
+    order_item(conn)
+    insert_order_item(conn)
 
     #promotions
     # promotions(conn)
     # insert_promotions(conn)
 
     #promotion_products
-    promotion_products(conn)
-    insert_promotion_products(conn)
+    # promotion_products(conn)
+    # insert_promotion_products(conn)
 
 

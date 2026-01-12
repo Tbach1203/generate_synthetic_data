@@ -33,8 +33,8 @@ This project uses Python and Faker to generate relationally consistent synthetic
 - **product**: 200 records  
 - **promotion**: 10 records  
 - **promotion_product**: 100 records  
-- **order**: 100,000 records  
-- **order_item**: 1,000,000 records   
+- **order**: ~2,5M-3M records  
+- **order_item**: ~7,5M-10M records   
 ## Getting Started
 ### 1. Clone the repository
 ```bash

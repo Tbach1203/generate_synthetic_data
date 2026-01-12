@@ -59,7 +59,7 @@ ORDER_STATUSES = [
 
 def insert_order(conn):
     fake = Faker()
-    volume = 100_000
+    volume = 2500000
     batch_size=2000
     seller_ids = fetch_seller_ids(conn)
 
